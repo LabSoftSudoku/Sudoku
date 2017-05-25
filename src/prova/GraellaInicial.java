@@ -1,7 +1,7 @@
 package prova;
 
 import aplicacio.Generador;
-import domini.Taulell;
+import domini.Partida;
 
 public class GraellaInicial extends Generador {
 
@@ -11,7 +11,7 @@ public class GraellaInicial extends Generador {
 			{ 0, 0, 0, 0, 8, 0, 0, 7, 9 } };
 
 	@Override
-	public void graellaInicial(Taulell t) throws Exception {
+	public void graellaInicial(Partida t) throws Exception {
 		
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {

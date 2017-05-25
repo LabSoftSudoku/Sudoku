@@ -40,7 +40,7 @@ public class Jugador {
 	}
 	
 	public void crearPartida(){
-		partidaActual = new Partida(gestioID());
+		//partidaActual = new Partida(gestioID());
 	}
 	
 	public Partida getPartidaActual(){

@@ -20,7 +20,7 @@ import java.awt.event.ActionListener;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-public class Run{
+public class FrameSudoku{
 
 	private JFrame frame;
 	private CasellaGrafica taulaCasella[][] = new CasellaGrafica[9][9];
@@ -28,24 +28,10 @@ public class Run{
 	private BarraMenu barraMenu;
 	private Listener listener;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Run window = new Run();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "Inane error",
-							JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-	}
-
-	public Run() {
+	public FrameSudoku() {
 
 		try {
-			intermediari = new ControladorSudoku();
+			intermediari = new ControladorSudoku(controlJugador);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(new JFrame(), "ERROR: en inicialitzar el programa", "ERROR",
 					JOptionPane.ERROR_MESSAGE);

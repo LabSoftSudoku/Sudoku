@@ -1,17 +1,17 @@
 package aplicacio;
 
-import domini.Taulell;
+import domini.Partida;
 import prova.GraellaInicial;
 
 public abstract class Generador {
 	
 	 static GraellaInicial graellaInicial;
 
-	public static void generarTaulell(Taulell t) throws Exception {
+	public static void generarTaulell(Partida t) throws Exception {
 		graellaInicial = new GraellaInicial();
 		graellaInicial.graellaInicial(t);
 	}
 
-	public abstract void graellaInicial(Taulell t) throws Exception;
+	public abstract void graellaInicial(Partida t) throws Exception;
 	
 }

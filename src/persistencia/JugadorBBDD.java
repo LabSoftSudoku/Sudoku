@@ -20,8 +20,10 @@ public class JugadorBBDD {
 		
 		if(!existJugador()){
 			crearJuagador();
+		}else{
+			setOnline();
 		}
-		canviarEstat(ONLINE);
+
 	}
 	
 	private boolean existJugador() throws Exception{
@@ -58,7 +60,7 @@ public class JugadorBBDD {
 		
 		try{
 			
-			String sql = "INSERT INTO JUGADOR VALUES (?, 0)";
+			String sql = "INSERT INTO JUGADOR VALUES (?, 1)";
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.clearParameters();
 			preparedStatement.setString(1, nom);
@@ -139,7 +141,7 @@ public class JugadorBBDD {
 		}
 	}
 	
-	public HashMap<Integer, Timestamp> getPartides() throws Exception{
+	public HashMap<Integer, Timestamp> getInfoPartides() throws Exception{
 		return partidaBBDD.getPartides(nom);
 	}
 	

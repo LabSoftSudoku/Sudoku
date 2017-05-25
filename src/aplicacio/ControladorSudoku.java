@@ -1,18 +1,21 @@
 package aplicacio;
 
-import domini.Taulell;
+import domini.Partida;
+import persistencia.LoginBBDD;
 
 public class ControladorSudoku {
 
-	private Taulell taulell;
+	private Partida partida;
+	private ControladorJugador controladorBBDD;
 
 	public ControladorSudoku() throws Exception {
-		taulell = new Taulell();
+		
+		partida = new Partida();
 	}
 
 	public void addValorSudoku(String fila, String columna, String valor) throws Exception {
 		try {
-			taulell.addValorTaulell(Integer.parseInt(fila), Integer.parseInt(columna), Integer.parseInt(valor));
+			partida.addValorTaulell(Integer.parseInt(fila), Integer.parseInt(columna), Integer.parseInt(valor));
 		} catch (NumberFormatException nfe) {
 			throw new Exception("ERROR: els valor no son numeros");
 		}
@@ -20,42 +23,46 @@ public class ControladorSudoku {
 
 	public void borrarValorSodoku(String fila, String columna) throws Exception {
 		try {
-			taulell.esborrarCasella(Integer.parseInt(fila), Integer.parseInt(columna));
+			partida.esborrarCasella(Integer.parseInt(fila), Integer.parseInt(columna));
 		} catch (NumberFormatException nfe) {
 			throw new Exception("ERROR: els valor no son numeros");
 		}
 	}
 	
 	public void generarSudokuAux() throws Exception{
-		taulell.generarGraellaAux();
+		partida.generarGraellaAux();
 	}
 
 	public String[][] getNumerosInicials() {
-		return taulell.getNumerosInicials();
+		return partida.getNumerosInicials();
 	}
 	
 	public void setNumerosInicials() throws Exception{
-		taulell.setNumerosInicials();
+		partida.setNumerosInicials();
 	}
 
 	public String[][] getNumeros() {
-		return taulell.getNumeros();
+		return partida.getNumeros();
 	}
 
 	public void generarNouSudoku() throws Exception {
-		taulell.genererNouTaulell();
+		partida.genererNouTaulell();
 	}
 
 	public String mostrarSodoku() {
-		return taulell.mostarTaulell();
+		return partida.mostarTaulell();
 	}
 
 	public boolean isSodokuComplet() {
-		return taulell.isTaulellComplet();
+		return partida.isTaulellComplet();
 	}
 
 	public int[] getUltimError() {
-		return taulell.getUltimError();
+		return partida.getUltimError();
+	}
+	
+	public void login(String user, String password, String nom) throws Exception{
+		controladorBBDD = new ControladorJugador(user, password, nom);
 	}
 
 }

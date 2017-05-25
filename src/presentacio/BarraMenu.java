@@ -16,9 +16,9 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 	private JMenu menuFitxer;
 	private JMenuItem opcioNou;
 	private JMenuItem opcioTancar;
-	private Run r;
+	private FrameSudoku r;
 
-	BarraMenu(Run r) {
+	BarraMenu(FrameSudoku r) {
 		this.r = r;
 		menuFitxer = new JMenu("Fitxer");
 		opcioNou = new JMenuItem("Nou");
@@ -44,7 +44,7 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 		} else {
 			try {
 				int confiramdo = JOptionPane.showConfirmDialog(new JFrame(),
-						"Estas segur que vols fer un nou Sudoku? Perdràs tot el contingut");
+						"Estas segur que vols fer un nou Sudoku? Perdrï¿½s tot el contingut");
 				if (JOptionPane.OK_OPTION == confiramdo) {
 					r.generarNouSodoku();
 				}

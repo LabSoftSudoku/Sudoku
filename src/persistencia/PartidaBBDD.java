@@ -52,8 +52,8 @@ class PartidaBBDD {
 		
 		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection();
 		
-		String[][] taulellInicial = partida.getTaulell().getNumerosInicials();
-		String[][] taulell = partida.getTaulell().getNumeros();
+		String[][] taulellInicial = partida.getNumerosInicials();
+		String[][] taulell = partida.getNumeros();
 
 		try{
 			for (int i = 0; i < taulell.length; i++) {
@@ -89,8 +89,8 @@ class PartidaBBDD {
 	private void guardarPartidaJaEsistent(String nom, Partida partida) throws Exception{
 		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection();
 		
-		String[][] taulellInicial = partida.getTaulell().getNumerosInicials();
-		String[][] taulell = partida.getTaulell().getNumeros();
+		String[][] taulellInicial = partida.getNumerosInicials();
+		String[][] taulell = partida.getNumeros();
 
 		try{
 			for (int i = 0; i < taulell.length; i++) {
