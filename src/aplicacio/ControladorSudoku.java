@@ -6,11 +6,13 @@ import persistencia.LoginBBDD;
 public class ControladorSudoku {
 
 	private Partida partida;
-	private ControladorJugador controladorBBDD;
+	private ControladorJugador controladorJugador;
 
-	public ControladorSudoku() throws Exception {
+	public ControladorSudoku(ControladorJugador controladorJugador) throws Exception {
 		
 		partida = new Partida();
+		this.controladorJugador = controladorJugador;
+		
 	}
 
 	public void addValorSudoku(String fila, String columna, String valor) throws Exception {
@@ -62,7 +64,7 @@ public class ControladorSudoku {
 	}
 	
 	public void login(String user, String password, String nom) throws Exception{
-		controladorBBDD = new ControladorJugador(user, password, nom);
+		controladorJugador = new ControladorJugador(user, password, nom);
 	}
 
 }

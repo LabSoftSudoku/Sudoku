@@ -1,5 +1,6 @@
 package presentacio;
 
+import aplicacio.ControladorJugador;
 import aplicacio.ControladorSudoku;
 
 import java.awt.BorderLayout;
@@ -24,14 +25,14 @@ public class FrameSudoku{
 
 	private JFrame frame;
 	private CasellaGrafica taulaCasella[][] = new CasellaGrafica[9][9];
-	private ControladorSudoku intermediari;
+	private ControladorSudoku controladorSudoku;
 	private BarraMenu barraMenu;
 	private Listener listener;
 
-	public FrameSudoku() {
+	public FrameSudoku(ControladorJugador controladorJugador) {
 
 		try {
-			intermediari = new ControladorSudoku(controlJugador);
+			controladorSudoku = new ControladorSudoku(controladorJugador);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(new JFrame(), "ERROR: en inicialitzar el programa", "ERROR",
 					JOptionPane.ERROR_MESSAGE);
@@ -63,7 +64,7 @@ public class FrameSudoku{
 				regioPanel[i][j].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 			}
 		}
-		listener = new Listener(intermediari, taulaCasella);
+		listener = new Listener(controladorSudoku, taulaCasella);
 
 		CasellaGrafica casellaGrafica;
 		for (int i = 0; i < 3; i++) {
@@ -93,7 +94,7 @@ public class FrameSudoku{
 
 		if (n == JOptionPane.OK_OPTION) {
 			try {
-				intermediari.generarSudokuAux();
+				controladorSudoku.generarSudokuAux();
 				generarSodoku();
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(new JFrame(), "ERROR: en inicialitzar el programa", "ERROR",
@@ -112,7 +113,7 @@ public class FrameSudoku{
 				public void actionPerformed(ActionEvent arg0) {
 					int num = 0;
 
-					String[][] t = intermediari.getNumeros();
+					String[][] t = controladorSudoku.getNumeros();
 
 					for (int i = 0; i < 9; i++) {
 						for (int j = 0; j < 9; j++) {
@@ -127,7 +128,7 @@ public class FrameSudoku{
 						JOptionPane.showMessageDialog(new JFrame(), "Ha d'haver m�s de 17 n�meros ");
 					}else{
 						try {
-							intermediari.setNumerosInicials();
+							controladorSudoku.setNumerosInicials();
 						} catch (Exception e) {
 							JOptionPane.showMessageDialog(new JFrame(), "ERROR: n�meros inicials", "ERROR",
 									JOptionPane.ERROR_MESSAGE);
@@ -145,7 +146,7 @@ public class FrameSudoku{
 	public void generarSodoku() {
 		
 		barraMenu.activeOpcioNou();
-		String[][] taulell = intermediari.getNumerosInicials();
+		String[][] taulell = controladorSudoku.getNumerosInicials();
 		CasellaGrafica casellaGrafica;
 		for (int i = 0; i < 3; i++) {
 			for (int k = 0; k < 3; k++) {
@@ -180,7 +181,7 @@ public class FrameSudoku{
 	}
 
 	public void generarNouSodoku() throws Exception {
-		intermediari.generarNouSudoku();
+		controladorSudoku.generarNouSudoku();
 		generarSodoku();
 	}
 

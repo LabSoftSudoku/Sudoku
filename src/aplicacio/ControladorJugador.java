@@ -1,12 +1,15 @@
 package aplicacio;
 
+import java.sql.Timestamp;
+import java.util.HashMap;
+
 import domini.Partida;
 import persistencia.JugadorBBDD;
 import persistencia.LoginBBDD;
 
 public class ControladorJugador {
 	
-	private JugadorBBDD  jugadorBBDD;
+	private JugadorBBDD jugadorBBDD;
 	
 	public ControladorJugador(String user, String password, String nom) throws Exception {
 		LoginBBDD.getInstancia(user, password);
@@ -40,6 +43,10 @@ public class ControladorJugador {
 	
 	public boolean modificarPartida(){
 		return false;
+	}
+	
+	public HashMap<Integer, Timestamp> getInfoPartides() throws Exception{
+		return jugadorBBDD.getInfoPartides();
 	}
 	
 }
