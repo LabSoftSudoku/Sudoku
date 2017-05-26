@@ -21,43 +21,29 @@ public class JFrameInicial extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		
-		Object[] options = {"ONLINE","OFFLINE"};
-		int modeDeJoc = JOptionPane.showOptionDialog(new Frame(), "Vols jugar amb connexió a BBDD (ONLINE) o sense (OFFLINE)?",
-											"Mode de joc", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-		
-		if(modeDeJoc == 0){ // Si el jugador tria jugar ONLINE
+
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						JFrameInicial frame = new JFrameInicial(modeDeJoc);
+						JFrameInicial frame = new JFrameInicial();
 						frame.setVisible(true);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
 			});
-		}
-		
-		else{
-			/*
-			 * GENERAR EL JOC COM SEMPRE.
-			 */
-			
-			System.exit(0);
-		}
-		
+
 		
 		
 	}
 	
-	public JFrameInicial(int modeDeJoc) {
+	public JFrameInicial() {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 520, 380);
 		setResizable(false);
 
-		contentPane = new JPanelCredencialsONLINE();
+		contentPane = new JPanelCredencialsONLINE(this);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);

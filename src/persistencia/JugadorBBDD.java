@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.HashMap;
 
+import domini.Partida;
+
 
 public class JugadorBBDD {
 	
@@ -20,8 +22,6 @@ public class JugadorBBDD {
 		
 		if(!existJugador()){
 			crearJuagador();
-		}else{
-			setOnline();
 		}
 
 	}
@@ -143,6 +143,14 @@ public class JugadorBBDD {
 	
 	public HashMap<Integer, Timestamp> getInfoPartides() throws Exception{
 		return partidaBBDD.getPartides(nom);
+	}
+	
+	public Partida carregarPartida(int id, Timestamp timestamp) throws Exception{
+		return partidaBBDD.cargarPartida(nom, id, timestamp);
+	}
+
+	public void guardarPartida(Partida partida) throws Exception {
+		partidaBBDD.guardarPartida(nom, partida);
 	}
 	
 }

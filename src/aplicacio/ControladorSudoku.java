@@ -10,8 +10,9 @@ public class ControladorSudoku {
 
 	public ControladorSudoku(ControladorJugador controladorJugador) throws Exception {
 		
-		partida = new Partida();
+		
 		this.controladorJugador = controladorJugador;
+		this.partida = controladorJugador.getPartida();
 		
 	}
 
@@ -65,6 +66,14 @@ public class ControladorSudoku {
 	
 	public void login(String user, String password, String nom) throws Exception{
 		controladorJugador = new ControladorJugador(user, password, nom);
+	}
+	
+	public void guardarPartida() throws Exception{
+		controladorJugador.guardarPartida(partida);
+	}
+	
+	public void setOffline() throws Exception{
+		controladorJugador.setOffline();
 	}
 
 }

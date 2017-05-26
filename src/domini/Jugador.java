@@ -39,13 +39,23 @@ public class Jugador {
 		return infoPartides.size();
 	}
 	
-	public void crearPartida(){
-		//partidaActual = new Partida(gestioID());
+	public void crearPartida() throws Exception{
+		partidaActual = new Partida(gestioID());
+		partidaActual.generarGraellaAux();
 	}
 	
 	public Partida getPartidaActual(){
 		return partidaActual;
 	}
+	
+	public void cargarPartida(Partida partida){
+		partidaActual = partida;
+	}
+
+	public HashMap<Integer, Timestamp> getInfoPartides() {
+		return infoPartides;
+	}
+
 	
 
 }

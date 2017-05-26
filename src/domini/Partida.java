@@ -14,7 +14,7 @@ public class Partida {
 	private int id;
 	private Timestamp timestamp;
 
-	public Partida() throws Exception {
+	public Partida(int id, Timestamp timestamp) throws Exception {
 
 		taulell = new Casella[9][9];
 		for (int i = 0; i < 9; i++) {
@@ -23,8 +23,12 @@ public class Partida {
 			}
 		}
 		
-		//this.id = id; //falta ponerlo en el constructor
-		timestamp = new Timestamp(System.currentTimeMillis());
+		this.id = id;
+		this.timestamp = timestamp;
+	}
+	
+	public Partida(int id) throws Exception{
+		this(id, new Timestamp(System.currentTimeMillis()));
 	}
 
 	public void generarGraellaAux() throws Exception {

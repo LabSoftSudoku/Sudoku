@@ -1,6 +1,7 @@
 package presentacio;
 
 import javax.swing.JPanel;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -13,20 +14,24 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
+import java.util.HashMap;
 
 import javax.swing.JTextField;
-import javax.swing.Icon;
 import javax.swing.JButton;
 
+
 public class JPanelCredencialsONLINE extends JPanel {
+	private JFrameInicial jFrameInicial;
+	
 	private JTextField textFieldUser;
 	private JTextField textFieldPassword;
 	private JTextField textFieldNomJugador;
 	
 	private ControladorJugador controladorJugador;
 	
-	public JPanelCredencialsONLINE() {
-		
+	public JPanelCredencialsONLINE(JFrameInicial jFrameInicial) {
+		this.jFrameInicial = jFrameInicial;
 		generarPanellCredencials();
 	}
 
@@ -88,22 +93,33 @@ public class JPanelCredencialsONLINE extends JPanel {
 					
 					
 					
+					HashMap<Integer, Timestamp> infoPartides = controladorJugador.getInfoPartides();
 					
-					// AQUI HEM DE ELIMINAR EL JFRAME actual
+					if(!infoPartides.isEmpty()){
+						
+						if(consultaPartidesBBDD()==1){
+							
+							System.out.println("cargar partida");
+							int idPartida;
+							if(infoPartides.size()>1){
+								
+								idPartida = mostrarPartidesBBDD(infoPartides);
+								
+							}else{
+								idPartida = (int) infoPartides.keySet().toArray()[0];
+							}
+							
+							
+							carregarPartidaBBDD(idPartida);
+							new FrameSudoku(controladorJugador);
+						}
+						
+					}else{
+						crearNovaPartida();
+					}
 					
+					jFrameInicial.dispose();
 					
-					
-					
-					
-					
-					
-					
-					// Comprobar si existeixen partides -> si no existeixen cridar al metode crearNovaPartida();
-					
-					// if()
-					consultaPartidesBBDD();
-					// else
-					// crearNovaPartida();
 					
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(new Frame(), e, "ERROR",JOptionPane.ERROR_MESSAGE);
@@ -114,84 +130,47 @@ public class JPanelCredencialsONLINE extends JPanel {
 		});		
 	}
 	
-	private void consultaPartidesBBDD() {
+	private int consultaPartidesBBDD() {
 		Object[] options = {"Crear nova partida","Carregar partida"};
 		int respostaConsultaPartidesBBDD = JOptionPane.showOptionDialog(new Frame(), "Vols crear una partida nova o carregar de BBDD?",
 											"Partides de Base de Dades", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		
-		if (respostaConsultaPartidesBBDD == 1) { // Carregar partida de BBDD
-			try {
-				carregarPartidaBBDD();
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(new Frame(), e.getMessage(), "ERROR",JOptionPane.ERROR_MESSAGE);
-			}
-		} else{ // El jugador vol crear una partida no jugada abans (nova)
-			crearNovaPartida();
+		return respostaConsultaPartidesBBDD;
+	}
+
+	private void carregarPartidaBBDD(int idPartida) throws Exception {
+		controladorJugador.carregarPartida(idPartida);
+		new FrameSudoku(controladorJugador);
+		
+	}
+	
+
+	private int mostrarPartidesBBDD(HashMap<Integer, Timestamp> infoPartides) {
+		
+		Object[] options = new Object[infoPartides.size()];
+		int[] ids = new int[infoPartides.size()];
+		
+		int i = 0;
+		for (Integer id : infoPartides.keySet()) {
+			options[i] = id.toString()+": "+infoPartides.get(id).toString();
+			ids[i] = id;
+			i++;
 		}
+		
+		Object partida = JOptionPane.showInputDialog(new Frame(), "Selecciona la partida que volguis jugar:\n",
+		                    "Partides registrades a BBDD", JOptionPane.PLAIN_MESSAGE, null, options,options[0]);
+		
+		int j = java.util.Arrays.asList(options).indexOf(partida);
+		
+		
+		return ids[j];
+		
+		
 	}
 
-	private void carregarPartidaBBDD() throws Exception {
+	private void crearNovaPartida() throws Exception {
 		
-		// numeroPartides per fer proves
-		int numeroPartides = 1;
-		
-		
-		if(numeroPartides  == 1)
-			
-			
-			
-			// OJO! Falten coses crec perqe no s'ha carregat res.
-			
-			new FrameSudoku(controladorJugador);
-		
-		
-		
-		
-		else
-			if(numeroPartides > 1)
-				mostrarPartidesBBDD();
-			else
-				throw new Exception("Error: No s'ha pogut determinar el nombre de partides a BBDD.");
-	}
-
-	private void mostrarPartidesBBDD() {
-		
-		Object[] possibilities = {"ham", "spam", "yam"};
-		
-		
-		
-		
-		
-		
-		// Posibilities dona error ja que fem servir un map (replantejar la manera de fer-ho o fer un JPanel independent)
-		// controladorJugador.getInfoPartides()
-		
-		
-		
-		
-		
-		
-		String s = (String)JOptionPane.showInputDialog(new Frame(), "Selecciona la partida que volguis jugar:\n",
-		                    "Partides registrades a BBDD", JOptionPane.PLAIN_MESSAGE, null, possibilities,"");
-
-	}
-
-	private void crearNovaPartida() {
-		
-		
-		
-		
-		
-		/*
-		 * PROBLEMAAAAAAAAAAAA!!
-		 * 
-		 * COMO !*? cerramos el JFRAME si no tenemos control sobre el aqui??
-		 */
-		
-		
-		
-		
-		
+		controladorJugador.novaPartida();
 		new FrameSudoku(controladorJugador);
 		
 	}
