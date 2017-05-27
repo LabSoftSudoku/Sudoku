@@ -80,8 +80,19 @@ public class JPanelCredencialsONLINE extends JPanel {
 		textFieldNomJugador.setText("NomProva");
 
 		JButton btnNewButton = new JButton("Iniciar Sessi\u00F3");
-		btnNewButton.setBounds(359, 286, 119, 35);
+		btnNewButton.setBounds(359, 286, 144, 35);
 		add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("Jugar OFFLINE");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				new FrameSudoku();
+			}
+		});
+		
+		btnNewButton_1.setBounds(63, 286, 133, 35);
+		add(btnNewButton_1);
 		btnNewButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -100,11 +111,11 @@ public class JPanelCredencialsONLINE extends JPanel {
 
 					if (resposte == JOptionPane.OK_OPTION) {
 						if (!infoPartides.isEmpty()) {
-							// te partides en la bbdd ?
+							// te partides en la bbdd?
 
 							int selOpcioModeJoc = consultaPartidesBBDD();
 
-							if (selOpcioModeJoc == JOptionPane.OK_OPTION) {
+							if (selOpcioModeJoc == JOptionPane.NO_OPTION) {
 								// cargar partida
 								int idPartida;
 								if (infoPartides.size() > 1) {
@@ -118,8 +129,8 @@ public class JPanelCredencialsONLINE extends JPanel {
 
 								carregarPartidaBBDD(idPartida);
 								jFrameInicial.dispose();
-							} else if (selOpcioModeJoc == JOptionPane.NO_OPTION) {
-								// nocargar partida
+							} else if (selOpcioModeJoc == JOptionPane.OK_OPTION) {
+								// no cargar partida
 								crearNovaPartidaAux();
 								jFrameInicial.dispose();
 							}else{
@@ -143,7 +154,6 @@ public class JPanelCredencialsONLINE extends JPanel {
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(new Frame(), e, "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
-
 			}
 
 		});
@@ -192,5 +202,4 @@ public class JPanelCredencialsONLINE extends JPanel {
 		new FrameSudoku(controladorJugador, FrameSudoku.JUGAR);
 
 	}
-
 }
