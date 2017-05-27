@@ -22,12 +22,12 @@ public class ControladorJugador {
 	
 	//Jugador
 	
-	public boolean modificarEstatJugador(){
+	public boolean getEstatJugador(){
 		return false;
 	}
 	
-	public boolean getEstatJugador(){
-		return false;
+	public void setOffline() throws Exception {
+		jugadorBBDD.setOffline();
 	}
 	
 	//Partida
@@ -40,8 +40,8 @@ public class ControladorJugador {
 		
 	}
 	
-	public boolean borrarPartida(){
-		return false;
+	public void borrarPartida(Partida partida) throws Exception{
+		jugadorBBDD.borrarPartida(partida);
 	}
 	
 	public boolean modificarPartida(){
@@ -59,14 +59,16 @@ public class ControladorJugador {
 
 
 	public void novaPartida() throws Exception {
-		jugador.crearPartida();
-		
-	}
-
-
-	public void setOffline() throws Exception {
-		jugadorBBDD.setOffline();
-		
+		jugador.crearPartida(jugadorBBDD.getInfoPartides());
 	}
 	
+	public void generarGraellaAux() throws Exception{
+		jugador.generarGraellaAux();
+	}
+
+
+	public void novaPartidaAmbInfo(String[][] numerosInicials) throws Exception {
+		jugador.crearPartidaAmbInfo(jugadorBBDD.getInfoPartides(), numerosInicials);
+		
+	}
 }

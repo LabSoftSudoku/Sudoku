@@ -39,8 +39,12 @@ public class Jugador {
 		return infoPartides.size();
 	}
 	
-	public void crearPartida() throws Exception{
+	public void crearPartida(HashMap<Integer, Timestamp> infoPartides) throws Exception{
+		this.infoPartides = infoPartides;
 		partidaActual = new Partida(gestioID());
+	}
+	
+	public void generarGraellaAux() throws Exception{
 		partidaActual.generarGraellaAux();
 	}
 	
@@ -56,6 +60,11 @@ public class Jugador {
 		return infoPartides;
 	}
 
-	
+	public void crearPartidaAmbInfo(HashMap<Integer, Timestamp> infoPartides, String[][] numerosInicials) throws Exception {
+		this.infoPartides = infoPartides;
+		partidaActual = new Partida(gestioID(), numerosInicials);
+		
+	}
+
 
 }

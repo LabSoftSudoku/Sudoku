@@ -49,6 +49,9 @@ public class ControladorSudoku {
 	}
 
 	public void generarNouSudoku() throws Exception {
+		controladorJugador.novaPartida(/*partida.getNumerosInicials()*/);
+		partida = controladorJugador.getPartida();
+		
 		partida.genererNouTaulell();
 	}
 
@@ -74,6 +77,18 @@ public class ControladorSudoku {
 	
 	public void setOffline() throws Exception{
 		controladorJugador.setOffline();
+	}
+	
+	public void borrarPartida() throws Exception{
+		controladorJugador.borrarPartida(partida);
+	}
+
+	public void generarNouSudokuAmbInfo() throws Exception {
+		controladorJugador.novaPartidaAmbInfo(partida.getNumerosInicials());
+		partida = controladorJugador.getPartida();
+		
+		partida.genererNouTaulell();
+		
 	}
 
 }

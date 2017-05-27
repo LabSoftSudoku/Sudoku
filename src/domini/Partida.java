@@ -10,7 +10,7 @@ public class Partida {
 
 	private Casella taulell[][];
 	private int[] ultimError = new int[2];
-	
+
 	private int id;
 	private Timestamp timestamp;
 
@@ -22,13 +22,26 @@ public class Partida {
 				taulell[i][j] = new Casella();
 			}
 		}
-		
+
 		this.id = id;
 		this.timestamp = timestamp;
 	}
-	
-	public Partida(int id) throws Exception{
+
+	public Partida(int id) throws Exception {
 		this(id, new Timestamp(System.currentTimeMillis()));
+	}
+
+	public Partida(int id, String[][] taulell) throws Exception {
+		this(id);
+
+		for (int i = 0; i < taulell.length; i++) {
+			for (int j = 0; j < taulell.length; j++) {
+				if (taulell[i][j] != null) {
+					addValorTaulell(i + 1, j + 1, Integer.parseInt(taulell[i][j]));
+					setIsCasellaInicial(i+1, j+1);
+				}
+			}
+		}
 	}
 
 	public void generarGraellaAux() throws Exception {
@@ -176,7 +189,7 @@ public class Partida {
 
 		return t;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -184,5 +197,5 @@ public class Partida {
 	public Timestamp getTimestamp() {
 		return timestamp;
 	}
-	
+
 }

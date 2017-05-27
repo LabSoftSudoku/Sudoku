@@ -15,26 +15,32 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 
 	private JMenu menuFitxer;
 	private JMenuItem opcioNou;
+	private JMenuItem opcioSave;
 	private JMenuItem opcioTancar;
-	private FrameSudoku r;
+	private FrameSudoku frameSudoku;
 
-	BarraMenu(FrameSudoku r) {
-		this.r = r;
+	BarraMenu(FrameSudoku frameSudoku) {
+		this.frameSudoku = frameSudoku;
 		menuFitxer = new JMenu("Fitxer");
 		opcioNou = new JMenuItem("Nou");
+		opcioSave = new JMenuItem("Save");
 		opcioTancar = new JMenuItem("Tancar");
 
 		opcioNou.addActionListener(this);
 		opcioTancar.addActionListener(this);
 
 		menuFitxer.add(opcioNou);
+		menuFitxer.add(opcioSave);
 		menuFitxer.add(opcioTancar);
 
 		this.add(menuFitxer);
 		
 		menuFitxer.setMnemonic('F');
 		opcioNou.setAccelerator(KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		opcioSave.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		
 		opcioNou.setEnabled(false);
+		setDisableSave();
 	}
 
 	@Override
@@ -43,10 +49,14 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 			System.exit(0);
 		} else {
 			try {
-				int confiramdo = JOptionPane.showConfirmDialog(new JFrame(),
-						"Estas segur que vols fer un nou Sudoku? Perdr�s tot el contingut");
-				if (JOptionPane.OK_OPTION == confiramdo) {
-					r.generarNouSodoku();
+				int option = JOptionPane.showConfirmDialog(new JFrame(),
+						"Vols guardar el contingut d'aquesst Sudou?");
+				if (option == JOptionPane.OK_OPTION) {
+					frameSudoku.guardarPartida();
+					frameSudoku.generarNouSodoku();
+					
+				}else if(option == JOptionPane.NO_OPTION){
+					frameSudoku.generarNouSodoku();
 				}
 
 			} catch (Exception e1) {
@@ -57,5 +67,13 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 	
 	public void activeOpcioNou(){
 		opcioNou.setEnabled(true);
+	}
+	
+	public void setEnableSave(){
+		opcioSave.setEnabled(true);
+	}
+	
+	public void setDisableSave(){
+		opcioSave.setEnabled(false);
 	}
 }

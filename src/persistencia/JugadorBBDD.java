@@ -152,5 +152,10 @@ public class JugadorBBDD {
 	public void guardarPartida(Partida partida) throws Exception {
 		partidaBBDD.guardarPartida(nom, partida);
 	}
+
+	public void borrarPartida(Partida partida) throws Exception {
+		partidaBBDD.borrarPartida(partida, nom);
+		
+	}
 	
 }

@@ -21,7 +21,10 @@ import java.awt.event.ActionListener;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-public class FrameSudoku{
+public class FrameSudoku {
+
+	public final static int JUGAR = 1;
+	public final static int CRACIO = 0;
 
 	private JFrame frame;
 	private CasellaGrafica taulaCasella[][] = new CasellaGrafica[9][9];
@@ -29,14 +32,17 @@ public class FrameSudoku{
 	private BarraMenu barraMenu;
 	private Listener listener;
 
-	public FrameSudoku(ControladorJugador controladorJugador) {
+	private int mode;
+
+	public FrameSudoku(ControladorJugador controladorJugador, int mode) {
 
 		try {
 			controladorSudoku = new ControladorSudoku(controladorJugador);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(new JFrame(), "ERROR: en inicialitzar el programa"+e.getStackTrace(), "ERROR",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(new JFrame(), "ERROR: en inicialitzar el programa" + e.getStackTrace(),
+					"ERROR", JOptionPane.ERROR_MESSAGE);
 		}
+		this.mode = mode;
 		initialize();
 	}
 
@@ -45,31 +51,35 @@ public class FrameSudoku{
 		frame = new JFrame("SUDOKU V.5");
 		barraMenu = new BarraMenu(this);
 		frame.setSize(500, 500);
-		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setJMenuBar(barraMenu);
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(new BorderLayout());
-		
+
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
-		    @Override
-		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-		        if (JOptionPane.showConfirmDialog(frame, 
-		            "Are you sure to close this window?", "Really Closing?", 
-		            JOptionPane.YES_NO_OPTION,
-		            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-		        	
-		        	try {
-						controladorSudoku.guardarPartida();
-						controladorSudoku.setOffline();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace(); // esta mal
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				if (mode == FrameSudoku.JUGAR) {
+					if (JOptionPane.showConfirmDialog(frame, "Are you sure to close this window?", "Really Closing?",
+							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+						try {
+							if (!controladorSudoku.isSodokuComplet()) {
+
+								controladorSudoku.guardarPartida();
+								controladorSudoku.setOffline();
+
+								System.exit(0);
+							} else {
+								controladorSudoku.borrarPartida();
+							}
+						} catch (Exception e) {
+
+							e.printStackTrace(); // esta mal
+						}
 					}
-		            System.exit(0);
-		        }
-		        
-		        System.exit(0);//mirar
-		    }
+				}
+
+				System.exit(0);// mirar
+			}
 		});
 
 		JPanel sudokuPanel = new JPanel();
@@ -86,7 +96,7 @@ public class FrameSudoku{
 				regioPanel[i][j].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 			}
 		}
-		
+
 		listener = new Listener(controladorSudoku, taulaCasella);
 
 		CasellaGrafica casellaGrafica;
@@ -103,27 +113,18 @@ public class FrameSudoku{
 						casellaGrafica.setBackground(Color.WHITE);
 						casellaGrafica.addKeyListener(listener);
 						casellaGrafica.addMouseListener(listener);
-						casellaGrafica.setCaretColor(new Color(255,255,255));
+						casellaGrafica.setCaretColor(new Color(255, 255, 255));
 						casellaGrafica.setCursor(new Cursor(Cursor.HAND_CURSOR));
-						
+
 					}
 				}
 			}
 		}
-		
-		/*
-		Object[] options = { "Jugar", "Crear" };
-		int n = JOptionPane.showOptionDialog(new JFrame(), "Vols crear un nou taulell o jugar directament",
-				"Seleccio", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-		if (n == JOptionPane.OK_OPTION) { //JOptionPane.OK_OPTION
-			try {
-				//controladorSudoku.generarSudokuAux();
-				generarSodoku();
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(new JFrame(), "ERROR: en inicialitzar el programa", "ERROR",
-						JOptionPane.ERROR_MESSAGE);
-			}
+		if (mode == JUGAR) {
+
+			generarSodoku();
+			listener.actualitzarFrame();
 
 		} else {
 			frame.setSize(500, 540);
@@ -133,10 +134,13 @@ public class FrameSudoku{
 			frame.getContentPane().add(bJugar, BorderLayout.SOUTH);
 
 			bJugar.addActionListener(new ActionListener() {
+
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					int num = 0;
-
+					
+					mode = FrameSudoku.JUGAR;
+					
 					String[][] t = controladorSudoku.getNumeros();
 
 					for (int i = 0; i < 9; i++) {
@@ -146,17 +150,18 @@ public class FrameSudoku{
 							}
 						}
 					}
-					if (num>80) {
+					if (num > 80) {
 						JOptionPane.showMessageDialog(new JFrame(), "Ha d'haver menys de 80 n�meros");
-					} else if(num<17){
+					} else if (num < 17) {
 						JOptionPane.showMessageDialog(new JFrame(), "Ha d'haver m�s de 17 n�meros ");
-					}else{
+					} else {
 						try {
 							controladorSudoku.setNumerosInicials();
 						} catch (Exception e) {
 							JOptionPane.showMessageDialog(new JFrame(), "ERROR: n�meros inicials", "ERROR",
 									JOptionPane.ERROR_MESSAGE);
 						}
+
 						generarSodoku();
 						frame.getContentPane().remove(bJugar);
 						frame.setSize(500, 500);
@@ -165,16 +170,13 @@ public class FrameSudoku{
 				}
 			});
 		}
-		*/
-		generarSodoku();
+
 		frame.setVisible(true);
-		
+
 	}
 
 	public void generarSodoku() {
-		
-		
-		
+
 		barraMenu.activeOpcioNou();
 		String[][] taulell = controladorSudoku.getNumerosInicials();
 		CasellaGrafica casellaGrafica;
@@ -202,7 +204,7 @@ public class FrameSudoku{
 							casellaGrafica.addKeyListener(listener);
 							casellaGrafica.addMouseListener(listener);
 							casellaGrafica.setCursor(new Cursor(Cursor.HAND_CURSOR));
-							
+
 						}
 					}
 				}
@@ -211,8 +213,12 @@ public class FrameSudoku{
 	}
 
 	public void generarNouSodoku() throws Exception {
-		controladorSudoku.generarNouSudoku();
+		controladorSudoku.generarNouSudokuAmbInfo();
 		generarSodoku();
+	}
+
+	public void guardarPartida() throws Exception {
+		controladorSudoku.guardarPartida();
 	}
 
 }
