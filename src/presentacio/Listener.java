@@ -18,10 +18,15 @@ class Listener implements KeyListener, MouseListener {
 	private CasellaGrafica taulaCasella[][];
 	private ControladorSudoku intermediari;
 	private boolean enJoc = false;
+	private FrameSudoku frameSudoku;
+	
+	private boolean isModified;
 
-	public Listener(ControladorSudoku intermediari, CasellaGrafica[][] taulaCasella) {
+	public Listener(ControladorSudoku intermediari, FrameSudoku frameSudoku) {
 		this.intermediari = intermediari;
-		this.taulaCasella = taulaCasella;
+		this.frameSudoku = frameSudoku;
+		this.taulaCasella = frameSudoku.getTaulaCasella();
+		this.isModified = false;
 
 	}
 	
@@ -92,6 +97,9 @@ class Listener implements KeyListener, MouseListener {
 					taulaCasella[i][j].setText(null);
 				}
 			}
+			isModified = true;
+			frameSudoku.setEnableSave();
+			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
 			actualitzarFrame();
@@ -133,6 +141,18 @@ class Listener implements KeyListener, MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent a) {
+	}
+	
+	public boolean getIsModified(){
+		return isModified;
+	}
+	
+	public void setNoModified (){
+		isModified = false;
+	}
+	
+	public void modified(){
+		isModified = true;
 	}
 
 }

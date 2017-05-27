@@ -53,32 +53,13 @@ public class FrameSudoku {
 		frame.setSize(500, 500);
 		frame.setJMenuBar(barraMenu);
 		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout());
-
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-				if (mode == FrameSudoku.JUGAR) {
-					if (JOptionPane.showConfirmDialog(frame, "Are you sure to close this window?", "Really Closing?",
-							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-						try {
-							if (!controladorSudoku.isSodokuComplet()) {
-
-								controladorSudoku.guardarPartida();
-								controladorSudoku.setOffline();
-
-								System.exit(0);
-							} else {
-								controladorSudoku.borrarPartida();
-							}
-						} catch (Exception e) {
-
-							e.printStackTrace(); // esta mal
-						}
-					}
-				}
-
-				System.exit(0);// mirar
+				
+				exit();
 			}
 		});
 
@@ -97,7 +78,7 @@ public class FrameSudoku {
 			}
 		}
 
-		listener = new Listener(controladorSudoku, taulaCasella);
+		listener = new Listener(controladorSudoku, this);
 
 		CasellaGrafica casellaGrafica;
 		for (int i = 0; i < 3; i++) {
@@ -138,9 +119,9 @@ public class FrameSudoku {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					int num = 0;
-					
+
 					mode = FrameSudoku.JUGAR;
-					
+
 					String[][] t = controladorSudoku.getNumeros();
 
 					for (int i = 0; i < 9; i++) {
@@ -218,7 +199,54 @@ public class FrameSudoku {
 	}
 
 	public void guardarPartida() throws Exception {
+		listener.setNoModified();
 		controladorSudoku.guardarPartida();
+	}
+
+	public void exit() {
+		if (mode == FrameSudoku.JUGAR) {
+			try {
+				if (!controladorSudoku.isSodokuComplet()) {
+					if (listener.getIsModified()) {
+						if (JOptionPane.showConfirmDialog(new JFrame(), "Vols guardar els canvis realitzats?", "Guardar",
+								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+							controladorSudoku.guardarPartida();
+						}
+					}
+					
+				} else {
+					controladorSudoku.borrarPartida();
+				}
+				if (JOptionPane.showConfirmDialog(new JFrame(), "Segur que vols deixar de jugar?", "Exit",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+					controladorSudoku.setOffline();
+					System.exit(0);
+				}
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(new JFrame(), "ERROR: en finalitzar el programa" + e.getStackTrace(),
+						"ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+			
+		}
+
+	}
+
+	public CasellaGrafica[][] getTaulaCasella() {
+		return taulaCasella;
+	}
+
+	public void setEnableSave() {
+		if (mode == FrameSudoku.JUGAR) {
+			barraMenu.setEnableSave();
+		}
+	}
+
+	public boolean getIsModified() {
+		return listener.getIsModified();
+	}
+	
+	public void modified (){
+		listener.modified();
 	}
 
 }

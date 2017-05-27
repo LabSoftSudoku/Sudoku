@@ -99,13 +99,12 @@ public class JPanelCredencialsONLINE extends JPanel {
 							JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
 					if (resposte == JOptionPane.OK_OPTION) {
-
 						if (!infoPartides.isEmpty()) {
 							// te partides en la bbdd ?
 
 							int selOpcioModeJoc = consultaPartidesBBDD();
 
-							if (selOpcioModeJoc == 1) {
+							if (selOpcioModeJoc == JOptionPane.OK_OPTION) {
 								// cargar partida
 								int idPartida;
 								if (infoPartides.size() > 1) {
@@ -119,10 +118,12 @@ public class JPanelCredencialsONLINE extends JPanel {
 
 								carregarPartidaBBDD(idPartida);
 								jFrameInicial.dispose();
-							} else if (selOpcioModeJoc == 0) {
+							} else if (selOpcioModeJoc == JOptionPane.NO_OPTION) {
 								// nocargar partida
 								crearNovaPartidaAux();
 								jFrameInicial.dispose();
+							}else{
+								controladorJugador.setOffline();
 							}
 
 						} else {
@@ -135,6 +136,8 @@ public class JPanelCredencialsONLINE extends JPanel {
 						controladorJugador.novaPartida();
 						new FrameSudoku(controladorJugador, FrameSudoku.CRACIO);
 						jFrameInicial.dispose();
+					}else{
+						controladorJugador.setOffline();
 					}
 
 				} catch (Exception e) {

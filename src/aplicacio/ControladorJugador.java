@@ -22,10 +22,6 @@ public class ControladorJugador {
 	
 	//Jugador
 	
-	public boolean getEstatJugador(){
-		return false;
-	}
-	
 	public void setOffline() throws Exception {
 		jugadorBBDD.setOffline();
 	}
@@ -44,19 +40,13 @@ public class ControladorJugador {
 		jugadorBBDD.borrarPartida(partida);
 	}
 	
-	public boolean modificarPartida(){
-		return false;
-	}
-	
 	public HashMap<Integer, Timestamp> getInfoPartides() throws Exception{
 		return jugador.getInfoPartides();
 	}
 	
 	public void carregarPartida(int id) throws Exception{
-		
 		jugador.cargarPartida(jugadorBBDD.carregarPartida(id, jugador.getInfoPartides().get(id)));
 	}
-
 
 	public void novaPartida() throws Exception {
 		jugador.crearPartida(jugadorBBDD.getInfoPartides());
@@ -66,9 +56,7 @@ public class ControladorJugador {
 		jugador.generarGraellaAux();
 	}
 
-
 	public void novaPartidaAmbInfo(String[][] numerosInicials) throws Exception {
 		jugador.crearPartidaAmbInfo(jugadorBBDD.getInfoPartides(), numerosInicials);
-		
 	}
 }

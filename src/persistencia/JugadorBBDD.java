@@ -22,8 +22,10 @@ public class JugadorBBDD {
 		
 		if(!existJugador()){
 			crearJuagador();
+		}else{
+			if(getEstatJugant())throw new Exception("Aquest jugador ja esta online actualment");
+			this.setOnline();
 		}
-
 	}
 	
 	private boolean existJugador() throws Exception{
@@ -106,16 +108,17 @@ public class JugadorBBDD {
 	public void setOnline() throws Exception{
 		canviarEstat(ONLINE);
 	}
+	
 	public void setOffline() throws Exception{
 		canviarEstat(OFFLINE);
 	}
 	
-	private boolean getEstatJugant() throws Exception{
+	public boolean getEstatJugant() throws Exception{
 		
 		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection();
 		
 		try{
-			String sql = "SELECT ESTATJUGAT FROM JUGADOR WHERE NOMJUGADOR = ?";
+			String sql = "select ESTATJUGANT from JUGADOR where NOMJUGADOR = ?";
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.clearParameters();
 			preparedStatement.setString(1, nom);
@@ -124,11 +127,13 @@ public class JugadorBBDD {
 			
 			
 			while (rs.next()) {
-				rs.close();
-				preparedStatement.close();
 				if(rs.getInt(1) == ONLINE){
+					rs.close();
+					preparedStatement.close();
 					return true;
 				}
+				rs.close();
+				preparedStatement.close();
 				return false;
 			}
 			rs.close();
@@ -137,7 +142,7 @@ public class JugadorBBDD {
 			
 		} catch(Exception e){
 			System.out.println(e);
-			throw new Exception("Error al compovar si existeix el jugador");
+			throw new Exception("Error al compovar si el jugador ja ha iniciat sessio");
 		}
 	}
 	

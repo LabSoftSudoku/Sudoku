@@ -28,52 +28,66 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 
 		opcioNou.addActionListener(this);
 		opcioTancar.addActionListener(this);
+		opcioSave.addActionListener(this);
 
 		menuFitxer.add(opcioNou);
 		menuFitxer.add(opcioSave);
 		menuFitxer.add(opcioTancar);
 
 		this.add(menuFitxer);
-		
+
 		menuFitxer.setMnemonic('F');
 		opcioNou.setAccelerator(KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		opcioSave.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		
+
 		opcioNou.setEnabled(false);
-		setDisableSave();
+		opcioSave.setEnabled(false);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals((JMenuItem) opcioTancar)) {
-			System.exit(0);
-		} else {
-			try {
-				int option = JOptionPane.showConfirmDialog(new JFrame(),
-						"Vols guardar el contingut d'aquesst Sudou?");
-				if (option == JOptionPane.OK_OPTION) {
-					frameSudoku.guardarPartida();
-					frameSudoku.generarNouSodoku();
-					
-				}else if(option == JOptionPane.NO_OPTION){
+
+		try {
+
+			if (e.getSource().equals((JMenuItem) opcioTancar)) {
+				//opcio Tancar
+				frameSudoku.exit();
+			} else if (e.getSource().equals((JMenuItem) opcioNou)) {
+				//opcio Nou
+				if(frameSudoku.getIsModified()){
+					int option = JOptionPane.showConfirmDialog(new JFrame(), "Vols guardar el contingut d'aquesst Sudou?");
+					if (option == JOptionPane.OK_OPTION) {
+						frameSudoku.guardarPartida();
+						frameSudoku.generarNouSodoku();
+
+					} else if (option == JOptionPane.NO_OPTION) {
+						frameSudoku.generarNouSodoku();
+					}
+				}else{
 					frameSudoku.generarNouSodoku();
 				}
+				opcioSave.setEnabled(true);
+				frameSudoku.modified();
+				
 
-			} catch (Exception e1) {
-				JOptionPane.showMessageDialog(new JFrame(), e1.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);	
+			} else {
+				//opcio Save
+				frameSudoku.guardarPartida();
+				opcioSave.setEnabled(false);
+
 			}
+
+		} catch (Exception e1) {
+			JOptionPane.showMessageDialog(new JFrame(), e1.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
-	public void activeOpcioNou(){
+
+	public void activeOpcioNou() {
 		opcioNou.setEnabled(true);
 	}
-	
-	public void setEnableSave(){
+
+	public void setEnableSave() {
 		opcioSave.setEnabled(true);
 	}
 	
-	public void setDisableSave(){
-		opcioSave.setEnabled(false);
-	}
 }
