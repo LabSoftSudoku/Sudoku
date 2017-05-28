@@ -37,6 +37,82 @@ public class JPanelCredencialsONLINE extends JPanel {
 
 	private void generarPanellCredencials() {
 		setLayout(null);
+		
+		ActionListener iniciarSessio = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				try {
+					String nomJugador = textFieldNomJugador.getText().trim();
+					if (nomJugador.length() == 0){
+						textFieldNomJugador.setText("");
+						throw new Exception("Nom del jugador erroni, minim un caracter");
+						}
+					controladorJugador = new ControladorJugador(textFieldUser.getText(), textFieldPassword.getText(),
+							nomJugador);
+
+					HashMap<Integer, Timestamp> infoPartides = controladorJugador.getInfoPartides();
+
+					Object[] options = { "Jugar", "Crear" };
+					int resposte = JOptionPane.showOptionDialog(new JFrame(),
+							"Vols crear un nou taulell o jugar directament", "Seleccio", JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+					if (resposte == JOptionPane.OK_OPTION) {
+						if (!infoPartides.isEmpty()) {
+							// te partides en la bbdd?
+
+							int selOpcioModeJoc = consultaPartidesBBDD();
+
+							if (selOpcioModeJoc == JOptionPane.NO_OPTION) {
+								// cargar partida
+								int idPartida = -1;
+								if (infoPartides.size() > 1) {
+									// te mes d'una partida
+									try {
+										int respostaMostrarPartidesBBDD = mostrarPartidesBBDD(infoPartides);
+										idPartida = respostaMostrarPartidesBBDD;
+									} catch (Exception e) {
+										controladorJugador.setOffline();
+										System.exit(0);
+									}
+
+								} else {
+									// sol te una pertida
+									idPartida = (int) infoPartides.keySet().toArray()[0];
+								}
+
+								carregarPartidaBBDD(idPartida);
+								jFrameInicial.dispose();
+							} else if (selOpcioModeJoc == JOptionPane.OK_OPTION) {
+								// no cargar partida
+								crearNovaPartidaAux();
+								jFrameInicial.dispose();
+							} else {
+								controladorJugador.setOffline();
+							}
+
+						} else {
+							// no te partides en la bbdd
+							crearNovaPartidaAux();
+							jFrameInicial.dispose();
+						}
+
+					} else if (resposte == JOptionPane.NO_OPTION) {
+						controladorJugador.novaPartida();
+						new FrameSudoku(controladorJugador, FrameSudoku.CREACIO);
+						jFrameInicial.dispose();
+					} else {
+						controladorJugador.setOffline();
+					}
+
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(new Frame(), e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+
+		};
 
 		JLabel lblIntrodueixLesCredencials = new JLabel("Introdueix les credencials de la BBDD");
 		lblIntrodueixLesCredencials.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -78,80 +154,12 @@ public class JPanelCredencialsONLINE extends JPanel {
 		textFieldNomJugador.setColumns(10);
 		textFieldNomJugador.setBounds(166, 236, 235, 22);
 		add(textFieldNomJugador);
+		textFieldNomJugador.addActionListener(iniciarSessio);
 
 		JButton btnNewButton = new JButton("Iniciar Sessi\u00F3");
 		btnNewButton.setBounds(359, 286, 144, 35);
 		add(btnNewButton);
-		btnNewButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-
-				try {
-					controladorJugador = new ControladorJugador(textFieldUser.getText(), textFieldPassword.getText(),
-							textFieldNomJugador.getText());
-
-					HashMap<Integer, Timestamp> infoPartides = controladorJugador.getInfoPartides();
-
-					Object[] options = { "Jugar", "Crear" };
-					int resposte = JOptionPane.showOptionDialog(new JFrame(),
-							"Vols crear un nou taulell o jugar directament", "Seleccio", JOptionPane.YES_NO_OPTION,
-							JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-
-					if (resposte == JOptionPane.OK_OPTION) {
-						if (!infoPartides.isEmpty()) {
-							// te partides en la bbdd?
-
-							int selOpcioModeJoc = consultaPartidesBBDD();
-
-							if (selOpcioModeJoc == JOptionPane.NO_OPTION) {
-								// cargar partida
-								int idPartida = -1;
-								if (infoPartides.size() > 1) {
-									// te mes d'una partida
-									try {
-										int respostaMostrarPartidesBBDD = mostrarPartidesBBDD(infoPartides);
-										idPartida = respostaMostrarPartidesBBDD;
-									} catch (Exception e) {
-										controladorJugador.setOffline();
-										System.exit(0);
-									}
-
-								} else {
-									// sol te una pertida
-									idPartida = (int) infoPartides.keySet().toArray()[0];
-								}
-
-								carregarPartidaBBDD(idPartida);
-								jFrameInicial.dispose();
-							} else if (selOpcioModeJoc == JOptionPane.OK_OPTION) {
-								// no cargar partida
-								crearNovaPartidaAux();
-								jFrameInicial.dispose();
-							}else{
-								controladorJugador.setOffline();
-							}
-
-						} else {
-							// no te partides en la bbdd
-							crearNovaPartidaAux();
-							jFrameInicial.dispose();
-						}
-
-					} else if (resposte == JOptionPane.NO_OPTION) {
-						controladorJugador.novaPartida();
-						new FrameSudoku(controladorJugador, FrameSudoku.CREACIO);
-						jFrameInicial.dispose();
-					}else{
-						controladorJugador.setOffline();
-					}
-
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(new Frame(), e, "ERROR", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-
-		});
+		btnNewButton.addActionListener(iniciarSessio);
 	}
 
 	private int consultaPartidesBBDD() {
