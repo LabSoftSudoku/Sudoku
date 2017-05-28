@@ -51,7 +51,7 @@ public class JugadorBBDD {
 			return false;
 		} catch(Exception e){
 			System.out.println(e);
-			throw new Exception("Error al compovar si existeix el jugador");
+			throw new Exception("Error al comprovar si existeix el jugador");
 		}
 		
 	}
@@ -101,7 +101,7 @@ public class JugadorBBDD {
 			
 		} catch(Exception e){
 			System.out.println(e);
-			throw new Exception("Error al crear un nou jugador");
+			throw new Exception("Error al canviar l'estat del jugador");
 		}
 	}
 	
@@ -142,7 +142,7 @@ public class JugadorBBDD {
 			
 		} catch(Exception e){
 			System.out.println(e);
-			throw new Exception("Error al compovar si el jugador ja ha iniciat sessio");
+			throw new Exception("Error al comprovar si el jugador ja ha iniciat sessio");
 		}
 	}
 	

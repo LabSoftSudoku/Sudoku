@@ -24,7 +24,7 @@ import javax.swing.border.LineBorder;
 public class FrameSudoku {
 
 	public final static int JUGAR = 1;
-	public final static int CRACIO = 0;
+	public final static int CREACIO = 0;
 
 	private JFrame frame;
 	private CasellaGrafica taulaCasella[][] = new CasellaGrafica[9][9];
@@ -39,7 +39,7 @@ public class FrameSudoku {
 		try {
 			controladorSudoku = new ControladorSudoku(controladorJugador);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(new JFrame(), "ERROR: en inicialitzar el programa" + e.getStackTrace(),
+			JOptionPane.showMessageDialog(new JFrame(), "ERROR: en inicialitzar el programa" + e.getMessage(),
 					"ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 		this.mode = mode;
@@ -58,7 +58,7 @@ public class FrameSudoku {
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-				
+
 				exit();
 			}
 		});
@@ -132,14 +132,14 @@ public class FrameSudoku {
 						}
 					}
 					if (num > 80) {
-						JOptionPane.showMessageDialog(new JFrame(), "Ha d'haver menys de 80 nï¿½meros");
+						JOptionPane.showMessageDialog(new JFrame(), "Ha d'haver menys de 80 números");
 					} else if (num < 17) {
-						JOptionPane.showMessageDialog(new JFrame(), "Ha d'haver mï¿½s de 17 nï¿½meros ");
+						JOptionPane.showMessageDialog(new JFrame(), "Ha d'haver més de 17 números ");
 					} else {
 						try {
 							controladorSudoku.setNumerosInicials();
 						} catch (Exception e) {
-							JOptionPane.showMessageDialog(new JFrame(), "ERROR: nï¿½meros inicials", "ERROR",
+							JOptionPane.showMessageDialog(new JFrame(), "ERROR: números inicials", "ERROR",
 									JOptionPane.ERROR_MESSAGE);
 						}
 
@@ -208,12 +208,13 @@ public class FrameSudoku {
 			try {
 				if (!controladorSudoku.isSodokuComplet()) {
 					if (listener.getIsModified()) {
-						if (JOptionPane.showConfirmDialog(new JFrame(), "Vols guardar els canvis realitzats?", "Guardar",
-								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+						if (JOptionPane.showConfirmDialog(new JFrame(), "Vols guardar els canvis realitzats?",
+								"Guardar", JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 							controladorSudoku.guardarPartida();
 						}
 					}
-					
+
 				} else {
 					controladorSudoku.borrarPartida();
 				}
@@ -226,7 +227,20 @@ public class FrameSudoku {
 				JOptionPane.showMessageDialog(new JFrame(), "ERROR: en finalitzar el programa" + e.getStackTrace(),
 						"ERROR", JOptionPane.ERROR_MESSAGE);
 			}
-			
+
+		}
+
+		else {
+			try {
+				if (JOptionPane.showConfirmDialog(new JFrame(), "Segur que vols sortir del creador?", "Exit",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+					controladorSudoku.setOffline();
+					System.exit(0);
+				}
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(new JFrame(), "ERROR: en finalitzar el programa" + e.getStackTrace(),
+						"ERROR", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 
 	}
@@ -244,8 +258,8 @@ public class FrameSudoku {
 	public boolean getIsModified() {
 		return listener.getIsModified();
 	}
-	
-	public void modified (){
+
+	public void modified() {
 		listener.modified();
 	}
 

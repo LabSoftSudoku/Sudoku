@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import aplicacio.ControladorJugador;
+import aplicacio.ControladorSudoku;
 import presentacio.FrameSudoku;
 
 import java.awt.Font;
@@ -77,22 +78,10 @@ public class JPanelCredencialsONLINE extends JPanel {
 		textFieldNomJugador.setColumns(10);
 		textFieldNomJugador.setBounds(166, 236, 235, 22);
 		add(textFieldNomJugador);
-		textFieldNomJugador.setText("NomProva");
 
 		JButton btnNewButton = new JButton("Iniciar Sessi\u00F3");
 		btnNewButton.setBounds(359, 286, 144, 35);
 		add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("Jugar OFFLINE");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				new FrameSudoku();
-			}
-		});
-		
-		btnNewButton_1.setBounds(63, 286, 133, 35);
-		add(btnNewButton_1);
 		btnNewButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -117,10 +106,16 @@ public class JPanelCredencialsONLINE extends JPanel {
 
 							if (selOpcioModeJoc == JOptionPane.NO_OPTION) {
 								// cargar partida
-								int idPartida;
+								int idPartida = -1;
 								if (infoPartides.size() > 1) {
 									// te mes d'una partida
-									idPartida = mostrarPartidesBBDD(infoPartides);
+									try {
+										int respostaMostrarPartidesBBDD = mostrarPartidesBBDD(infoPartides);
+										idPartida = respostaMostrarPartidesBBDD;
+									} catch (Exception e) {
+										controladorJugador.setOffline();
+										System.exit(0);
+									}
 
 								} else {
 									// sol te una pertida
@@ -145,7 +140,7 @@ public class JPanelCredencialsONLINE extends JPanel {
 
 					} else if (resposte == JOptionPane.NO_OPTION) {
 						controladorJugador.novaPartida();
-						new FrameSudoku(controladorJugador, FrameSudoku.CRACIO);
+						new FrameSudoku(controladorJugador, FrameSudoku.CREACIO);
 						jFrameInicial.dispose();
 					}else{
 						controladorJugador.setOffline();
@@ -187,7 +182,7 @@ public class JPanelCredencialsONLINE extends JPanel {
 		}
 
 		Object partida = JOptionPane.showInputDialog(new Frame(), "Selecciona la partida que volguis jugar:\n",
-				"Partides registrades a BBDD", JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+				"Partides registrades a BBDD", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
 		int j = java.util.Arrays.asList(options).indexOf(partida);
 

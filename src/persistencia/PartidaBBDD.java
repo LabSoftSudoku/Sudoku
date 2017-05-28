@@ -36,7 +36,7 @@ class PartidaBBDD {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception("Error al getPartides");
+			throw new Exception("Error al obtenir partides de base de dades");
 		}
 
 	}
@@ -102,7 +102,7 @@ class PartidaBBDD {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception("Error al guardarPartidaNoExistent");
+			throw new Exception("Error al guardar una nova partida");
 		}
 
 	}
@@ -137,7 +137,7 @@ class PartidaBBDD {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception("Error al guardarPartidaNoExistent");
+			throw new Exception("Error al guardar una partida existent");
 		}
 	}
 
@@ -178,7 +178,7 @@ class PartidaBBDD {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception("Error al cargar Partida");
+			throw new Exception("Error al carregar una partida");
 		}
 
 	}
@@ -209,7 +209,7 @@ class PartidaBBDD {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception("Error al getPartides");
+			throw new Exception("Error al comprovar si existeix la partida a BBDD");
 		}
 	}
 
@@ -241,7 +241,7 @@ class PartidaBBDD {
 				preparedStatement.close();
 
 			} catch (Exception e) {
-				throw new Exception("Error al borrar patida");
+				throw new Exception("Error al borrar la patida");
 			}
 		}
 	}

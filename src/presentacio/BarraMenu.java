@@ -55,7 +55,7 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 			} else if (e.getSource().equals((JMenuItem) opcioNou)) {
 				//opcio Nou
 				if(frameSudoku.getIsModified()){
-					int option = JOptionPane.showConfirmDialog(new JFrame(), "Vols guardar el contingut d'aquesst Sudou?");
+					int option = JOptionPane.showConfirmDialog(new JFrame(), "Vols guardar el contingut d'aquest Sudou?");
 					if (option == JOptionPane.OK_OPTION) {
 						frameSudoku.guardarPartida();
 						frameSudoku.generarNouSodoku();
@@ -78,7 +78,7 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 			}
 
 		} catch (Exception e1) {
-			JOptionPane.showMessageDialog(new JFrame(), e1.getMessage(), "Inane error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(new JFrame(), e1.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
