@@ -6,7 +6,6 @@ import aplicacio.ControladorSudoku;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.EventQueue;
 import java.awt.Font;
 
 import javax.swing.JButton;
@@ -132,14 +131,14 @@ public class FrameSudoku {
 						}
 					}
 					if (num > 80) {
-						JOptionPane.showMessageDialog(new JFrame(), "Ha d'haver menys de 80 números");
+						JOptionPane.showMessageDialog(new JFrame(), "Ha d'haver menys de 80 nï¿½meros");
 					} else if (num < 17) {
-						JOptionPane.showMessageDialog(new JFrame(), "Ha d'haver més de 17 números ");
+						JOptionPane.showMessageDialog(new JFrame(), "Ha d'haver mï¿½s de 17 nï¿½meros ");
 					} else {
 						try {
 							controladorSudoku.setNumerosInicials();
 						} catch (Exception e) {
-							JOptionPane.showMessageDialog(new JFrame(), "ERROR: números inicials", "ERROR",
+							JOptionPane.showMessageDialog(new JFrame(), "ERROR: nï¿½meros inicials", "ERROR",
 									JOptionPane.ERROR_MESSAGE);
 						}
 

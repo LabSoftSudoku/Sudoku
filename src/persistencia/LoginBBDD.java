@@ -12,10 +12,12 @@ public class LoginBBDD {
 	public void login(String user, String password) throws Exception{
 		if(connection==null){
 			connection = new ConnectionBBDD(user, password);
+		}else{
+			//pensar
 		}
 	}
 	
-	public ConnectionBBDD getConnection() throws Exception{
+	ConnectionBBDD getConnection() throws Exception{
 		if(connection == null) throw new Exception("No ha iniciat sessio");
 		return connection;
 	}

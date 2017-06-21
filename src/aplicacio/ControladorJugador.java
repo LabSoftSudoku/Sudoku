@@ -31,7 +31,7 @@ public class ControladorJugador {
 		jugadorBBDD.guardarPartida(partida);
 	}
 	
-	public Partida getPartida(){
+	 Partida getPartida(){ //sol domini mirar tots
 		return jugador.getPartidaActual();
 		
 	}
