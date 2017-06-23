@@ -1,62 +1,65 @@
 package aplicacio;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 
 import domini.Jugador;
 import domini.Partida;
-import persistencia.JugadorBBDD;
-import persistencia.LoginBBDD;
+import persistencia.FacadeBBDD;
 
 public class ControladorJugador {
-	
-	private JugadorBBDD jugadorBBDD;
+	private FacadeBBDD facadeBBDD;
 	private Jugador jugador;
 	
 	public ControladorJugador(String user, String password, String nom) throws Exception {
-		LoginBBDD.getInstancia(user, password);
-		jugadorBBDD = new JugadorBBDD(nom);
-		jugador = new Jugador(nom, jugadorBBDD.getInfoPartides());
+		
+		this.facadeBBDD = new FacadeBBDD(user, password);
+		
+		if(!facadeBBDD.existJugador(nom)){
+			facadeBBDD.crearJuagador(nom);
+		}else{
+			if(facadeBBDD.getEstatJugant(nom))throw new Exception("Aquest jugador ja esta online actualment");
+			facadeBBDD.setOnline(nom);
+		}
+		jugador = new Jugador(nom, facadeBBDD.getInfoPartides(nom));
 	}
+	
 	
 	
 	//Jugador
 	
-	public void setOffline() throws Exception {
-		jugadorBBDD.setOffline();
+	public void setOffline() throws Exception{
+		facadeBBDD.setOffline(jugador.getNom());
+	
 	}
 	
 	//Partida
 	public void guardarPartida(Partida partida) throws Exception{
-		jugadorBBDD.guardarPartida(partida);
+		facadeBBDD.guardarPartida(jugador.getNom(), partida);
 	}
 	
-	 Partida getPartida(){ //sol domini mirar tots
+	Partida getPartida(){
 		return jugador.getPartidaActual();
-		
 	}
 	
-	public void borrarPartida(Partida partida) throws Exception{
-		jugadorBBDD.borrarPartida(partida);
+	public void borrarPartida(Partida partida) throws Exception {
+		facadeBBDD.guardarPartida(jugador.getNom(), partida);
 	}
 	
-	public HashMap<Integer, Timestamp> getInfoPartides() throws Exception{
+	public HashMap<Integer, Date> getInfoPartides() {
 		return jugador.getInfoPartides();
 	}
 	
 	public void carregarPartida(int id) throws Exception{
-		jugador.cargarPartida(jugadorBBDD.carregarPartida(id, jugador.getInfoPartides().get(id)));
+		jugador.cargarPartida(facadeBBDD.carregarPartida(jugador.getNom(), id, jugador.getInfoPartides().get(id)));
 	}
 
 	public void novaPartida() throws Exception {
-		jugador.crearPartida(jugadorBBDD.getInfoPartides());
+		jugador.crearPartida(facadeBBDD.getInfoPartides(jugador.getNom()));
 	}
 	
 	public void generarGraellaAux() throws Exception{
 		jugador.generarGraellaAux();
 	}
 
-	public void novaPartidaAmbInfo(String[][] numerosInicials) throws Exception {
-		jugador.crearPartidaAmbInfo(jugadorBBDD.getInfoPartides(), numerosInicials);
-	}
 }

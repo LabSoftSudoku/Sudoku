@@ -1,6 +1,6 @@
 package domini;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Jugador {
@@ -8,10 +8,10 @@ public class Jugador {
 	private String nom;
 	private boolean estaJugant;
 	private Partida partidaActual;
-	private HashMap<Integer, Timestamp> infoPartides;
+	private HashMap<Integer, Date> infoPartides;
 	
 	
-	public Jugador(String nom, HashMap<Integer, Timestamp> partides){
+	public Jugador(String nom, HashMap<Integer, Date> partides){
 		this.nom = nom;
 		this.infoPartides = partides;
 		this.estaJugant = true;	
@@ -39,7 +39,7 @@ public class Jugador {
 		return infoPartides.size();
 	}
 	
-	public void crearPartida(HashMap<Integer, Timestamp> infoPartides) throws Exception{
+	public void crearPartida(HashMap<Integer, Date> infoPartides) throws Exception{
 		this.infoPartides = infoPartides;
 		partidaActual = new Partida(gestioID());
 	}
@@ -56,11 +56,11 @@ public class Jugador {
 		partidaActual = partida;
 	}
 
-	public HashMap<Integer, Timestamp> getInfoPartides() {
+	public HashMap<Integer, Date> getInfoPartides() {
 		return infoPartides;
 	}
 
-	public void crearPartidaAmbInfo(HashMap<Integer, Timestamp> infoPartides, String[][] numerosInicials) throws Exception {
+	public void crearPartidaAmbInfo(HashMap<Integer, Date> infoPartides, String[][] numerosInicials) throws Exception {
 		this.infoPartides = infoPartides;
 		partidaActual = new Partida(gestioID(), numerosInicials);
 		

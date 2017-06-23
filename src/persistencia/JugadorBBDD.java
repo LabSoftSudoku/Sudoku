@@ -8,27 +8,12 @@ import java.util.HashMap;
 import domini.Partida;
 
 
-public class JugadorBBDD {
+class JugadorBBDD {
 	
 	final static int ONLINE = 1;
 	final static int OFFLINE = 0;
 	
-	private String nom;
-	private PartidaBBDD partidaBBDD;
-
-	public JugadorBBDD(String nom) throws Exception{
-		this.nom = nom;
-		partidaBBDD = new PartidaBBDD();
-		
-		if(!existJugador()){
-			crearJuagador();
-		}else{
-			if(getEstatJugant())throw new Exception("Aquest jugador ja esta online actualment");
-			this.setOnline();
-		}
-	}
-	
-	private boolean existJugador() throws Exception{
+	public boolean existJugador(String nom) throws Exception{
 		
 		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection();
 		
@@ -56,7 +41,7 @@ public class JugadorBBDD {
 		
 	}
 	
-	private void crearJuagador() throws Exception{
+	public void crearJuagador(String nom) throws Exception{
 		
 		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection(); 
 		
@@ -78,7 +63,7 @@ public class JugadorBBDD {
 		}
 	}
 	
-	private void canviarEstat(int estatJugant) throws Exception{
+	private void canviarEstat(String nom, int estatJugant) throws Exception{
 		
 		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection(); 
 		
@@ -105,15 +90,15 @@ public class JugadorBBDD {
 		}
 	}
 	
-	public void setOnline() throws Exception{
-		canviarEstat(ONLINE);
+	public void setOnline(String nom) throws Exception{
+		canviarEstat(nom, ONLINE);
 	}
 	
-	public void setOffline() throws Exception{
-		canviarEstat(OFFLINE);
+	public void setOffline(String nom) throws Exception{
+		canviarEstat(nom, OFFLINE);
 	}
 	
-	public boolean getEstatJugant() throws Exception{
+	public boolean getEstatJugant(String nom) throws Exception{
 		
 		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection();
 		
@@ -144,23 +129,6 @@ public class JugadorBBDD {
 			System.out.println(e);
 			throw new Exception("Error al comprovar si el jugador ja ha iniciat sessio");
 		}
-	}
-	
-	public HashMap<Integer, Timestamp> getInfoPartides() throws Exception{
-		return partidaBBDD.getPartides(nom);
-	}
-	
-	public Partida carregarPartida(int id, Timestamp timestamp) throws Exception{
-		return partidaBBDD.cargarPartida(nom, id, timestamp);
-	}
-
-	public void guardarPartida(Partida partida) throws Exception {
-		partidaBBDD.guardarPartida(nom, partida);
-	}
-
-	public void borrarPartida(Partida partida) throws Exception {
-		partidaBBDD.borrarPartida(partida, nom);
-		
 	}
 	
 }

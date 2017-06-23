@@ -54,27 +54,13 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 				frameSudoku.exit();
 			} else if (e.getSource().equals((JMenuItem) opcioNou)) {
 				//opcio Nou
-				if(frameSudoku.getIsModified()){
-					int option = JOptionPane.showConfirmDialog(new JFrame(), "Vols guardar el contingut d'aquest Sudou?");
-					if (option == JOptionPane.OK_OPTION) {
-						frameSudoku.guardarPartida();
-						frameSudoku.generarNouSodoku();
-
-					} else if (option == JOptionPane.NO_OPTION) {
-						frameSudoku.generarNouSodoku();
-					}
-				}else{
-					frameSudoku.generarNouSodoku();
-				}
+				frameSudoku.generarNouSodoku();
 				opcioSave.setEnabled(true);
 				frameSudoku.modified();
-				
-
 			} else {
 				//opcio Save
 				frameSudoku.guardarPartida();
 				opcioSave.setEnabled(false);
-
 			}
 
 		} catch (Exception e1) {

@@ -7,14 +7,13 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import aplicacio.ControladorJugador;
-import aplicacio.ControladorSudoku;
 import presentacio.FrameSudoku;
 
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.swing.JTextField;
@@ -52,7 +51,7 @@ public class JPanelCredencialsONLINE extends JPanel {
 					controladorJugador = new ControladorJugador(textFieldUser.getText(), textFieldPassword.getText(),
 							nomJugador);
 
-					HashMap<Integer, Timestamp> infoPartides = controladorJugador.getInfoPartides();
+					HashMap<Integer, Date> infoPartides = controladorJugador.getInfoPartides();
 
 					Object[] options = { "Jugar", "Crear" };
 					int resposte = JOptionPane.showOptionDialog(new JFrame(),
@@ -177,7 +176,7 @@ public class JPanelCredencialsONLINE extends JPanel {
 
 	}
 
-	private int mostrarPartidesBBDD(HashMap<Integer, Timestamp> infoPartides) {
+	private int mostrarPartidesBBDD(HashMap<Integer, Date> infoPartides) {
 
 		Object[] options = new Object[infoPartides.size()];
 		int[] ids = new int[infoPartides.size()];

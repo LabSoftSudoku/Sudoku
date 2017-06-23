@@ -1,6 +1,6 @@
 package persistencia;
 
-public class LoginBBDD {
+class LoginBBDD {
 	
 	private ConnectionBBDD connection;
 	private static LoginBBDD instancia;
@@ -13,12 +13,12 @@ public class LoginBBDD {
 		if(connection==null){
 			connection = new ConnectionBBDD(user, password);
 		}else{
-			//pensar
+			throw new Exception("Ja has iniciat sessió.");
 		}
 	}
 	
 	ConnectionBBDD getConnection() throws Exception{
-		if(connection == null) throw new Exception("No ha iniciat sessio");
+		if(connection == null) throw new Exception("No ha iniciat sessio.");
 		return connection;
 	}
 	
@@ -31,7 +31,7 @@ public class LoginBBDD {
 	
 	public synchronized static LoginBBDD getInstancia() throws Exception{
 		if(instancia == null){
-			throw new Exception("Primer genera el LoginBBDD");
+			throw new Exception("Primer genera el LoginBBDD.");
 		}
 		return instancia;
 	}

@@ -3,19 +3,14 @@ package persistencia;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 
 import domini.Partida;
 
 class PartidaBBDD {
 
-
-	
-	private CasellaBBDD  casellaBBDD;
-
-	public HashMap<Integer, Timestamp> getPartides(String nom) throws Exception {
-		
-		casellaBBDD = new CasellaBBDD();
+	public HashMap<Integer, Date> getPartides(String nom) throws Exception {
 
 		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection();
 
@@ -28,10 +23,10 @@ class PartidaBBDD {
 
 			ResultSet rs = preparedStatement.executeQuery();
 
-			HashMap<Integer, Timestamp> partides = new HashMap<Integer, Timestamp>();
+			HashMap<Integer, Date> partides = new HashMap<Integer, Date>();
 
 			while (rs.next()) {
-				partides.put(rs.getInt("IDSUDOKU"), rs.getTimestamp("HORACREACIO"));
+				partides.put(rs.getInt("IDSUDOKU"), new Date(rs.getTimestamp("HORACREACIO").getTime()));
 			}
 			rs.close();
 			preparedStatement.close();
@@ -45,14 +40,6 @@ class PartidaBBDD {
 	}
 
 	public void guardarPartida(String nom, Partida partida) throws Exception {
-		if (existPartida(partida.getId(), nom)) {
-			guardarPartidaJaEsistent(nom, partida);
-		} else {
-			guardarPartidaNoExistent(nom, partida);
-		}
-	}
-
-	private void guardarPartidaNoExistent(String nom, Partida partida) throws Exception {
 
 		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection();
 
@@ -62,28 +49,18 @@ class PartidaBBDD {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.clearParameters();
 			preparedStatement.setString(1, nom);
-			preparedStatement.setTimestamp(2, partida.getTimestamp()); //pujar a dalt
+			preparedStatement.setTimestamp(2, new Timestamp(partida.getDate().getTime()));
 			preparedStatement.setInt(3, partida.getId());
 
 			preparedStatement.executeQuery();
 
 			preparedStatement.close();
 			
-			casellaBBDD.guardarCasellas(nom, partida);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Error al guardar una nova partida");
 		}
 
-	}
-
-	private void guardarPartidaJaEsistent(String nom, Partida partida) throws Exception {
-		casellaBBDD.updateCaselles(nom, partida);
-	}
-
-	public Partida cargarPartida(String nom, int id, Timestamp timestamp) throws Exception {
-		return casellaBBDD.cargarCaselles(nom, id, timestamp);
 	}
 
 	public boolean existPartida(int id, String nom) throws Exception {

@@ -1,6 +1,7 @@
 package domini;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,9 +13,9 @@ public class Partida {
 	private int[] ultimError = new int[2];
 
 	private int id;
-	private Timestamp timestamp;
+	private Date date;
 
-	public Partida(int id, Timestamp timestamp) throws Exception {
+	public Partida(int id, Date date) throws Exception {
 
 		taulell = new Casella[9][9];
 		for (int i = 0; i < 9; i++) {
@@ -24,7 +25,7 @@ public class Partida {
 		}
 
 		this.id = id;
-		this.timestamp = timestamp;
+		this.date = date;
 	}
 
 	public Partida(int id) throws Exception {
@@ -105,7 +106,7 @@ public class Partida {
 		return ultimError;
 	}
 
-	public void genererNouTaulell() throws Exception {
+	public void shakeTaulell() throws Exception {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				if (!taulell[i][j].isCasellaInicial()) {
@@ -194,8 +195,8 @@ public class Partida {
 		return id;
 	}
 
-	public Timestamp getTimestamp() {
-		return timestamp;
+	public Date getDate() {
+		return date;
 	}
 
 }

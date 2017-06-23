@@ -47,7 +47,7 @@ public class FrameSudoku {
 
 	private void initialize() {
 
-		frame = new JFrame("SUDOKU V.5");
+		frame = new JFrame("SUDOKU V.666");
 		barraMenu = new BarraMenu(this);
 		frame.setSize(500, 500);
 		frame.setJMenuBar(barraMenu);
@@ -78,6 +78,9 @@ public class FrameSudoku {
 		}
 
 		listener = new Listener(controladorSudoku, this);
+		if(mode == JUGAR){
+			listener.enJoc();
+		}
 
 		CasellaGrafica casellaGrafica;
 		for (int i = 0; i < 3; i++) {
@@ -193,7 +196,7 @@ public class FrameSudoku {
 	}
 
 	public void generarNouSodoku() throws Exception {
-		controladorSudoku.generarNouSudokuAmbInfo();
+		controladorSudoku.shakeTaulell();
 		generarSodoku();
 	}
 

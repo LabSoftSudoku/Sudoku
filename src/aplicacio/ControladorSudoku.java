@@ -1,7 +1,6 @@
 package aplicacio;
 
 import domini.Partida;
-import persistencia.LoginBBDD;
 
 public class ControladorSudoku {
 
@@ -48,13 +47,6 @@ public class ControladorSudoku {
 		return partida.getNumeros();
 	}
 
-	public void generarNouSudoku() throws Exception {
-		controladorJugador.novaPartida(/*partida.getNumerosInicials()*/);
-		partida = controladorJugador.getPartida();
-		
-		partida.genererNouTaulell();
-	}
-
 	public String mostrarSodoku() {
 		return partida.mostarTaulell();
 	}
@@ -65,10 +57,6 @@ public class ControladorSudoku {
 
 	public int[] getUltimError() {
 		return partida.getUltimError();
-	}
-	
-	public void login(String user, String password, String nom) throws Exception{
-		controladorJugador = new ControladorJugador(user, password, nom);
 	}
 	
 	public void guardarPartida() throws Exception{
@@ -82,12 +70,9 @@ public class ControladorSudoku {
 	public void borrarPartida() throws Exception{
 		controladorJugador.borrarPartida(partida);
 	}
-
-	public void generarNouSudokuAmbInfo() throws Exception {
-		controladorJugador.novaPartidaAmbInfo(partida.getNumerosInicials());
-		partida = controladorJugador.getPartida();
-		
-		partida.genererNouTaulell();
+	
+	public void shakeTaulell() throws Exception {
+		partida.shakeTaulell();
 		
 	}
 
