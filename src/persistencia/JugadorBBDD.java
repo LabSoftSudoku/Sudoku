@@ -15,7 +15,7 @@ class JugadorBBDD {
 	
 	public boolean existJugador(String nom) throws Exception{
 		
-		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection();
+		LoginBBDD connection = LoginBBDD.getInstancia();
 		
 		try{
 			String sql = "SELECT * FROM JUGADOR WHERE NOMJUGADOR = ?";
@@ -43,7 +43,7 @@ class JugadorBBDD {
 	
 	public void crearJuagador(String nom) throws Exception{
 		
-		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection(); 
+		LoginBBDD connection = LoginBBDD.getInstancia();
 		
 		try{
 			
@@ -65,7 +65,7 @@ class JugadorBBDD {
 	
 	private void canviarEstat(String nom, int estatJugant) throws Exception{
 		
-		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection(); 
+		LoginBBDD connection = LoginBBDD.getInstancia();
 		
 		try{
 			
@@ -100,7 +100,7 @@ class JugadorBBDD {
 	
 	public boolean getEstatJugant(String nom) throws Exception{
 		
-		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection();
+		LoginBBDD connection = LoginBBDD.getInstancia();
 		
 		try{
 			String sql = "select ESTATJUGANT from JUGADOR where NOMJUGADOR = ?";

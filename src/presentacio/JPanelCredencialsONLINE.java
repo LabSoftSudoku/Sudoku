@@ -1,7 +1,7 @@
 package presentacio;
 
 import javax.swing.JPanel;
-
+import javax.swing.JPasswordField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -24,7 +24,8 @@ public class JPanelCredencialsONLINE extends JPanel {
 	private JFrameInicial jFrameInicial;
 
 	private JTextField textFieldUser;
-	private JTextField textFieldPassword;
+	//private JTextField textFieldPassword;
+	private JPasswordField passwordField;
 	private JTextField textFieldNomJugador;
 
 	private ControladorJugador controladorJugador;
@@ -39,6 +40,7 @@ public class JPanelCredencialsONLINE extends JPanel {
 		
 		ActionListener iniciarSessio = new ActionListener() {
 
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -48,7 +50,7 @@ public class JPanelCredencialsONLINE extends JPanel {
 						textFieldNomJugador.setText("");
 						throw new Exception("Nom del jugador erroni, minim un caracter");
 						}
-					controladorJugador = new ControladorJugador(textFieldUser.getText(), textFieldPassword.getText(),
+					controladorJugador = new ControladorJugador(textFieldUser.getText(), passwordField.getText(),
 							nomJugador);
 
 					HashMap<Integer, Date> infoPartides = controladorJugador.getInfoPartides();
@@ -125,6 +127,7 @@ public class JPanelCredencialsONLINE extends JPanel {
 		lblUserBbdd.setBounds(22, 89, 133, 53);
 		add(lblUserBbdd);
 
+		
 		textFieldUser = new JTextField();
 		textFieldUser.setBounds(166, 104, 235, 22);
 		add(textFieldUser);
@@ -136,12 +139,12 @@ public class JPanelCredencialsONLINE extends JPanel {
 		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblPassword.setBounds(22, 155, 133, 53);
 		add(lblPassword);
-
-		textFieldPassword = new JTextField();
-		textFieldPassword.setColumns(10);
-		textFieldPassword.setBounds(166, 170, 235, 22);
-		add(textFieldPassword);
-		textFieldPassword.setText("G9GEILAB181");
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(166, 170, 235, 22);
+		add(passwordField);
+		passwordField.setColumns(10);
+		passwordField.setText("G9GEILAB181");
 
 		JLabel lblNomJugador = new JLabel("Nom jugador:");
 		lblNomJugador.setHorizontalAlignment(SwingConstants.CENTER);

@@ -12,8 +12,8 @@ class PartidaBBDD {
 
 	public HashMap<Integer, Date> getPartides(String nom) throws Exception {
 
-		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection();
-
+		LoginBBDD connection = LoginBBDD.getInstancia();
+		
 		try {
 
 			String sql = "select IDSUDOKU, HORACREACIO from SUDOKU where NOMJUGADOR = ?";
@@ -41,8 +41,8 @@ class PartidaBBDD {
 
 	public void guardarPartida(String nom, Partida partida) throws Exception {
 
-		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection();
-
+		LoginBBDD connection = LoginBBDD.getInstancia();
+		
 		try {
 
 			String sql = "insert into SUDOKU values (?, ?, ?)";
@@ -65,8 +65,8 @@ class PartidaBBDD {
 
 	public boolean existPartida(int id, String nom) throws Exception {
 
-		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection();
-
+		LoginBBDD connection = LoginBBDD.getInstancia();
+		
 		try {
 			String sql = "select * from SUDOKU where IDSUDOKU = ? AND NOMJUGADOR = ?";
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -96,8 +96,8 @@ class PartidaBBDD {
 	public void borrarPartida(Partida partida, String nom) throws Exception {
 		if (existPartida(partida.getId(), nom)) {
 
-			ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection();
-
+			LoginBBDD connection = LoginBBDD.getInstancia();
+			
 			try {
 
 				String sql = "delete from CASELLA where NOMJUGADOR = ? and IDSUDOKU = ?";

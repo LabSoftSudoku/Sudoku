@@ -6,33 +6,27 @@ import java.util.Date;
 
 import domini.Partida;
 
- class CasellaBBDD {
-	
+class CasellaBBDD {
+
 	final static int INICIAL = 1;
 	final static int NOINICIAL = 0;
-	
-	void guardarCasellas(String nom, Partida partida) throws Exception{
-		
-		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection();
-		
+
+	void guardarCasellas(String nom, Partida partida) throws Exception {
+
+		LoginBBDD connection = LoginBBDD.getInstancia();
+
 		String[][] taulellInicial = partida.getNumerosInicials();
 		String[][] taulell = partida.getNumeros();
-		
+
 		String sql = "insert into CASELLA values (?, ?, ?, ?, ?, ?)";
-		
-		
-		
-		
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.clearParameters();
+
+		preparedStatement.setString(1, nom);
+		preparedStatement.setInt(2, partida.getId());
+
 		for (int i = 0; i < taulell.length; i++) {
 			for (int j = 0; j < taulell.length; j++) {
-				
-				sql = "insert into CASELLA values (?, ?, ?, ?, ?, ?)";
-				
-				PreparedStatement preparedStatement = connection.prepareStatement(sql);
-				preparedStatement.clearParameters();
-				
-				preparedStatement.setString(1, nom);
-				preparedStatement.setInt(2, partida.getId());
 
 				preparedStatement.setInt(3, i); // COORX 0-8
 				preparedStatement.setInt(4, j); // COORY 0-8
@@ -54,17 +48,15 @@ import domini.Partida;
 
 				preparedStatement.executeQuery();
 
-				preparedStatement.close();
 			}
 		}
-		//preparedStatement.close();
+		preparedStatement.close();
 	}
-	
-	
-	public Partida cargarCaselles(String nom, int id, Date date) throws Exception{
-		
-		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection();
 
+	public Partida cargarCaselles(String nom, int id, Date date) throws Exception {
+
+		LoginBBDD connection = LoginBBDD.getInstancia();
+		
 		Partida partida = new Partida(id, date);
 
 		try {
@@ -72,7 +64,7 @@ import domini.Partida;
 			String sql = "select COORX, COORY, VALOR, ISEDITABLE from CASELLA where NOMJUGADOR = ? AND IDSUDOKU = ?";
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.clearParameters();
-			
+
 			preparedStatement.setString(1, nom);
 			preparedStatement.setInt(2, id);
 
@@ -104,34 +96,35 @@ import domini.Partida;
 		}
 
 	}
-	
-	public void updateCaselles (String nom, Partida partida) throws Exception{
-		ConnectionBBDD connection = LoginBBDD.getInstancia().getConnection();
+
+	public void updateCaselles(String nom, Partida partida) throws Exception {
+		LoginBBDD connection = LoginBBDD.getInstancia();
 
 		String[][] taulell = partida.getNumeros();
 		String[][] taulellInicial = partida.getNumerosInicials();
 
 		try {
+			String sql = "UPDATE CASELLA set VALOR = ?, ISEDITABLE = ? WHERE NOMJUGADOR = ? AND IDSUDOKU = ? AND COORX = ? AND COORY = ?";
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.clearParameters();
+
+			preparedStatement.setString(3, nom);
+			preparedStatement.setInt(4, partida.getId());
+
 			for (int i = 0; i < taulell.length; i++) {
 				for (int j = 0; j < taulell.length; j++) {
-					String sql = "UPDATE CASELLA set VALOR = ?, ISEDITABLE = ? WHERE NOMJUGADOR = ? AND IDSUDOKU = ? AND COORX = ? AND COORY = ?";
-					PreparedStatement preparedStatement = connection.prepareStatement(sql);
-					preparedStatement.clearParameters();
-					
-					preparedStatement.setString(3, nom);
-					preparedStatement.setInt(4, partida.getId());
-					
+
 					preparedStatement.setInt(5, i); // COORX 0-8
 					preparedStatement.setInt(6, j); // COORY 0-8
 
 					if (taulell[i][j].length() == 0) {
 						preparedStatement.setInt(1, 0); // VALOR 0-9
 					} else {
-						//son necesarios los parseInt
+
 						preparedStatement.setInt(1, Integer.parseInt(taulell[i][j])); // VALOR
 																						// 1-9
 					}
-					
+
 					if (taulellInicial[i][j] != null) {
 						preparedStatement.setInt(2, INICIAL); // ISEDITABLE
 																// EDITABLE-NOEDITABLE
@@ -141,9 +134,11 @@ import domini.Partida;
 					}
 
 					preparedStatement.executeQuery();
-					preparedStatement.close();
+
 				}
 			}
+
+			preparedStatement.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Error al guardar una partida existent");

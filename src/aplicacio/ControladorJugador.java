@@ -46,7 +46,7 @@ public class ControladorJugador {
 		facadeBBDD.guardarPartida(jugador.getNom(), partida);
 	}
 	
-	public HashMap<Integer, Date> getInfoPartides() {
+	public HashMap<Integer, Date> getInfoPartides() { //hashs
 		return jugador.getInfoPartides();
 	}
 	
